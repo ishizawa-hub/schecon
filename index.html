@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>プロフィール - 飯田了 | ScheCon</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+      background: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* ヘッダー */
+    .header {
+      background: #fff;
+      border-bottom: 1px solid #eee;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+      font-size: 18px;
+      color: #f5a623;
+    }
+
+    .header-logo .logo-icon {
+      width: 28px;
+      height: 28px;
+      background: #f5a623;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .header-icons {
+      display: flex;
+      gap: 16px;
+      margin-left: 20px;
+    }
+
+    .header-icons a {
+      color: #f5a623;
+      text-decoration: none;
+      font-size: 18px;
+    }
+
+    /* メインコンテナ */
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      min-height: 100vh;
+    }
+
+    /* プロフィールヘッダー */
+    .profile-header {
+      padding: 24px 20px 16px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .profile-avatar {
+      flex-shrink: 0;
+    }
+
+    .profile-avatar img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #f5a623;
+    }
+
+    .profile-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .profile-name {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .profile-name-kana {
+      font-size: 12px;
+      color: #999;
+      margin-bottom: 8px;
+    }
+
+    .profile-headline {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    .profile-headline .company {
+      color: #f5a623;
+      font-weight: 600;
+    }
+
+    /* 自己紹介 */
+    .profile-bio {
+      padding: 0 20px 16px;
+      font-size: 13px;
+      color: #555;
+      line-height: 1.7;
+      background: #fffbf0;
+      margin: 0 16px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border-left: 3px solid #f5a623;
+    }
+
+    /* チャットボタン */
+    .chat-button {
+      display: block;
+      margin: 16px 20px;
+      padding: 12px;
+      background: #f5a623;
+      color: #fff;
+      text-align: center;
+      border-radius: 24px;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .chat-button:hover {
+      background: #e09510;
+    }
+
+    /* 連絡先 */
+    .contact-list {
+      padding: 0 20px 8px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
+    }
+
+    .contact-item:last-child {
+      border-bottom: none;
+    }
+
+    .contact-icon {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #f5a623;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .contact-item a {
+      color: #f5a623;
+      text-decoration: none;
+      word-break: break-all;
+    }
+
+    .contact-item a:hover {
+      text-decoration: underline;
+    }
+
+    .contact-item .copy-btn {
+      width: 24px;
+      height: 24px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background: #fff;
+      color: #999;
+      cursor: pointer;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: border-color 0.2s;
+    }
+
+    .contact-item .copy-btn:hover {
+      border-color: #f5a623;
+      color: #f5a623;
+    }
+
+    /* タブ */
+    .tabs {
+      display: flex;
+      border-bottom: 2px solid #eee;
+      margin: 0 20px;
+    }
+
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 12px 0;
+      font-size: 14px;
+      font-weight: 600;
+      color: #ccc;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.2s;
+    }
+
+    .tab.active {
+      color: #f5a623;
+    }
+
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: #f5a623;
+      border-radius: 2px 2px 0 0;
+    }
+
+    /* セクション */
+    .section {
+      padding: 20px 20px 8px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #f5a623;
+      display: inline-block;
+    }
+
+    /* スキルタグ */
+    .skills-section {
+      padding: 16px 20px 8px;
+      background: #fffbf0;
+      margin: 0 16px;
+      border-radius: 8px;
+    }
+
+    .skills-section .section-title {
+      margin-bottom: 12px;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .skill-tag {
+      padding: 6px 14px;
+      border: 1.5px solid #f5a623;
+      border-radius: 20px;
+      font-size: 12px;
+      color: #f5a623;
+      font-weight: 600;
+      background: #fff;
+    }
+
+    /* 経歴 */
+    .career-list {
+      list-style: none;
+    }
+
+    .career-item {
+      display: flex;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid #f0f0f0;
+      align-items: flex-start;
+    }
+
+    .career-item:last-child {
+      border-bottom: none;
+    }
+
+    .career-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 10px;
+      color: #999;
+      overflow: hidden;
+    }
+
+    .career-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .career-detail {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .career-company {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .career-position {
+      font-size: 13px;
+      color: #666;
+    }
+
+    .career-period {
+      font-size: 12px;
+      color: #999;
+      margin-top: 2px;
+    }
+
+    /* 学歴 */
+    .education-item {
+      display: flex;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid #f0f0f0;
+      align-items: center;
+    }
+
+    .education-item:last-child {
+      border-bottom: none;
+    }
+
+    .education-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f5a623, #e08a10);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .education-detail {
+      flex: 1;
+    }
+
+    .education-name {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .education-year {
+      font-size: 12px;
+      color: #999;
+    }
+
+    /* 個人情報 */
+    .personal-info-list {
+      list-style: none;
+    }
+
+    .personal-info-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      font-size: 14px;
+    }
+
+    .personal-info-icon {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #f5a623;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    /* 会社情報セクション */
+    .company-info {
+      padding: 0 20px 8px;
+    }
+
+    .company-info-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .company-info-item:last-child {
+      border-bottom: none;
+    }
+
+    .company-info-icon {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #f5a623;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .company-info-text {
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* フッター */
+    .footer {
+      padding: 20px;
+      text-align: center;
+      font-size: 11px;
+      color: #999;
+      border-top: 1px solid #eee;
+      margin-top: 16px;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px 16px;
+      margin-bottom: 12px;
+    }
+
+    .footer-links a {
+      color: #999;
+      text-decoration: none;
+      font-size: 11px;
+    }
+
+    .footer-links a:hover {
+      color: #f5a623;
+    }
+
+    .footer-copyright {
+      color: #bbb;
+    }
+
+    /* SVGアイコン用 */
+    .icon {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+    }
+
+    /* レスポンシブ: PC */
+    @media (min-width: 768px) {
+      body {
+        background: #f0f0f0;
+      }
+
+      .container {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+        min-height: auto;
+        overflow: hidden;
+      }
+
+      .profile-header {
+        padding: 32px 28px 20px;
+      }
+
+      .profile-avatar img {
+        width: 100px;
+        height: 100px;
+      }
+
+      .profile-name {
+        font-size: 26px;
+      }
+
+      .section {
+        padding: 24px 28px 12px;
+      }
+
+      .tabs {
+        margin: 0 28px;
+      }
+
+      .contact-list {
+        padding: 0 28px 8px;
+      }
+
+      .company-info {
+        padding: 0 28px 8px;
+      }
+
+      .chat-button {
+        margin: 16px 28px;
+      }
+
+      .skills-section {
+        margin: 0 24px;
+      }
+
+      .profile-bio {
+        margin: 0 24px;
+      }
+    }
+
+    /* フローティングチャットアイコン */
+    .floating-chat {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 52px;
+      height: 52px;
+      background: #a8d83a;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      cursor: pointer;
+      z-index: 50;
+      transition: transform 0.2s;
+    }
+
+    .floating-chat:hover {
+      transform: scale(1.1);
+    }
+
+    .floating-chat svg {
+      width: 26px;
+      height: 26px;
+      fill: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ヘッダー -->
+  <header class="header">
+    <div class="header-logo">
+      <span class="logo-icon">Sc</span>
+      ScheCon
+    </div>
+    <div class="header-icons">
+      <a href="#" title="連絡帳">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f5a623" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      </a>
+      <a href="#" title="履歴">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f5a623" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </a>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- プロフィールヘッダー -->
+    <div class="profile-header">
+      <div class="profile-avatar">
+        <img src="https://via.placeholder.com/100x100/f5a623/fff?text=RI" alt="飯田了">
+      </div>
+      <div class="profile-info">
+        <div class="profile-name">飯田 了</div>
+        <div class="profile-name-kana">イイダ マモル</div>
+        <div class="profile-headline">
+          <span class="company">株式会社TIMEMACHINE</span><br>
+          営業部門<br>
+          アカウントマネージャー / メディアプランナー
+        </div>
+      </div>
+    </div>
+
+    <!-- 自己紹介 -->
+    <div class="profile-bio">
+      株式会社TIMEMACHINEの営業部門にてアカウントマネージャー・メディアプランナーとして従事しています。お気軽にご連絡ください。
+    </div>
+
+    <!-- チャットボタン -->
+    <a href="#" class="chat-button">チャットをする</a>
+
+    <!-- 連絡先 -->
+    <div class="contact-list">
+      <div class="contact-item">
+        <span class="contact-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f5a623" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </span>
+        <a href="mailto:iida@time-machine.co.jp">iida@time-machine.co.jp</a>
+        <button class="copy-btn" onclick="copyText('iida@time-machine.co.jp')" title="コピー">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </button>
+      </div>
+      <div class="contact-item">
+        <span class="contact-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f5a623" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </span>
+        <a href="tel:03-6320-1840">03-6320-1840</a>
+        <button class="copy-btn" onclick="copyText('03-6320-1840')" title="コピー">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- タブ -->
+    <div class="tabs">
+      <div class="tab active">プロフィール</div>
+      <div class="tab">予定調整</div>
+    </div>
+
+    <!-- スキル・経験 -->
+    <div class="skills-section">
+      <div class="section-title">スキル・経験</div>
+      <div class="skill-tags">
+        <span class="skill-tag">メディアプランニング</span>
+        <span class="skill-tag">アカウントマネジメント</span>
+        <span class="skill-tag">広告運用</span>
+        <span class="skill-tag">デジタルマーケティング</span>
+        <span class="skill-tag">営業：10年以上</span>
+      </div>
+    </div>
+
+    <!-- 経歴 -->
+    <div class="section">
+      <div class="section-title">経歴</div>
+      <ul class="career-list">
+        <li class="career-item">
+          <div class="career-logo">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+          </div>
+          <div class="career-detail">
+            <div class="career-company">株式会社TIMEMACHINE</div>
+            <div class="career-position">営業部門 アカウントマネージャー / メディアプランナー</div>
+            <div class="career-period">2020年4月〜現在 · 5年11か月</div>
+          </div>
+        </li>
+        <li class="career-item">
+          <div class="career-logo">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+          </div>
+          <div class="career-detail">
+            <div class="career-company">株式会社サイバーエージェント</div>
+            <div class="career-position">メディア営業</div>
+            <div class="career-period">2015年4月〜2020年3月 · 5年</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 学歴 -->
+    <div class="section">
+      <div class="section-title">学歴</div>
+      <div class="education-item">
+        <div class="education-logo">学</div>
+        <div class="education-detail">
+          <div class="education-name">明治大学</div>
+          <div class="education-year">2015年卒業</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 個人の情報 -->
+    <div class="section">
+      <div class="section-title">個人の情報</div>
+      <ul class="personal-info-list">
+        <li class="personal-info-item">
+          <span class="personal-info-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f5a623" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </span>
+          東京都 渋谷区在住
+        </li>
+        <li class="personal-info-item">
+          <span class="personal-info-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f5a623" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </span>
+          東京都出身
+        </li>
+      </ul>
+    </div>
+
+    <!-- 会社情報 -->
+    <div class="section">
+      <div class="section-title">所属会社</div>
+      <div class="company-info">
+        <div class="company-info-item">
+          <span class="company-info-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f5a623" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+          </span>
+          <div class="company-info-text">
+            株式会社TIMEMACHINE<br>
+            営業部門<br>
+            アカウントマネージャー / メディアプランナー
+          </div>
+        </div>
+        <div class="company-info-item">
+          <span class="company-info-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f5a623" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </span>
+          <div class="company-info-text">
+            <a href="#" style="color:#f5a623;text-decoration:none;">〒150-0012 東京都渋谷区広尾 1-5-8</a>
+          </div>
+        </div>
+        <div class="company-info-item">
+          <span class="company-info-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f5a623" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </span>
+          <div class="company-info-text">
+            <a href="https://time-machine.co.jp/" target="_blank" style="color:#f5a623;text-decoration:none;">https://time-machine.co.jp/</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- フッター -->
+    <footer class="footer">
+      <div class="footer-links">
+        <a href="#">個人情報の取り扱いについて</a>
+        <a href="#">プライバシーポリシー</a>
+        <a href="#">特定商取引法上の表記</a>
+        <a href="#">FAQ</a>
+        <a href="#">運営会社</a>
+        <a href="#">お問い合わせ</a>
+      </div>
+      <div class="footer-copyright">&copy; Schecon.com All Rights Reserved.</div>
+    </footer>
+  </div>
+
+  <!-- フローティングチャットボタン -->
+  <div class="floating-chat" title="チャット">
+    <svg viewBox="0 0 24 24" fill="#fff"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+  </div>
+
+  <script>
+    // コピー機能
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(function() {
+        // 簡易トースト表示
+        var toast = document.createElement('div');
+        toast.textContent = 'コピーしました';
+        toast.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:8px 20px;border-radius:20px;font-size:13px;z-index:200;opacity:0;transition:opacity 0.3s;';
+        document.body.appendChild(toast);
+        setTimeout(function() { toast.style.opacity = '1'; }, 10);
+        setTimeout(function() { toast.style.opacity = '0'; setTimeout(function() { toast.remove(); }, 300); }, 1500);
+      });
+    }
+
+    // タブ切り替え
+    document.querySelectorAll('.tab').forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+        this.classList.add('active');
+      });
+    });
+  </script>
+
+</body>
+</html>
